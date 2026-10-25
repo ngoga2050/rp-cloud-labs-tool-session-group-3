@@ -35,7 +35,7 @@ The group will use Agile development, feature branches, pull requests, automated
 3.mukeshimanasolange
 4.umutoadeline1!
 5.ishimweFuraha
-6.titemunezero
+6.titemuneza
 7.Ahishakiye1
 
 

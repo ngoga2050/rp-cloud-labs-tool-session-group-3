@@ -1,6 +1,6 @@
 RP-Cloud Labs — Tool-Session Service
 
- 1. Project Overview
+1. Project Overview
 
 RP-Cloud Labs is a proposed platform that provides students and lecturers with browser-based access to hosted learning tools without requiring local software installation.
 

@@ -1,0 +1,5 @@
+ Connect to GitHub repository
+git remote add origin https://github.com/ngoga2050/rp-cloud-labs-tool-session-group-3.git
+
+# Push branch to GitHub
+git push -u origin feature/api-scaffold

@@ -1,0 +1,25 @@
+Q1. Identify the major components
+1. User Interface
+Allows students to request and access learning tools through a web browser.
+
+2. API / Application Service
+Receives and processes student requests for tool sessions.
+
+3. Account Validation Service
+Verifies the student's ID and checks whether their account is active.
+
+4. License Capacity Manager
+Checks the availability of software licenses for each college before granting access.
+
+5. Session Management Service
+Creates, manages, and tracks student tool-session records.
+
+6. PostgreSQL Database
+Stores important information about students, colleges, software licenses, and sessions.
+
+7. Redis Cache
+Temporarily stores frequently accessed information to improve system performance and response time.
+
+8. Kafka Broker
+Communicates session-related events and messages between different services.
+

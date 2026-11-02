@@ -1,0 +1,9 @@
+Q6.
+# Check files
+git status
+
+# Add all scaffold files
+git add .
+
+# Create a commit
+git commit -m "Create API project scaffold and Docker configuration"

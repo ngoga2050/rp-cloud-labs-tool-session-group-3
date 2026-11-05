@@ -1,52 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RP-Cloud Labs</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for layout icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <h1>RP-Cloud Labs</h1>
-    <h2>Tool Session Management</h2>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="navbar">
+            <div class="brand">
+                <i class="fa-solid fa-cloud"></i>
+                <span>RP-CLOUD LABS</span>
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user"></i>
+                <span>Student name</span>
+            </div>
+        </header>
 
-    <label>Select Learning Tool:</label>
+        <!-- Main Body Area -->
+        <div class="main-body">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul class="nav-links">
+                    <li class="active">
+                        <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-regular fa-clock"></i> My sessions</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                    </li>
+                </ul>
+            </aside>
 
-    <select id="tool">
-        <option>Python IDE</option>
-        <option>Database Engine</option>
-        <option>CAD Tool</option>
-    </select>
+            <!-- Content Area -->
+            <main class="content">
+                <div class="welcome-section">
+                    <h1>Welcome to RP-Cloud labs!</h1>
+                    <p>Access powerful learning tools in the cloud, anytime, anywhere.</p>
+                </div>
 
-    <br><br>
+                <div class="tools-section">
+                    <h2>Available Tools</h2>
+                    
+                    <div class="cards-grid">
+                        <!-- Tool Card 1: Python / VS Code -->
+                        <div class="tool-card">
+                            <div class="card-content">
+                                <div class="tool-icon code-icon"><i class="fa-solid fa-code"></i></div>
+                                <h3>VS Code</h3>
+                                <p>IDE for coding</p>
+                            </div>
+                            <button class="request-btn" onclick="createSession('Python IDE')">Request Session</button>
+                        </div>
 
-    <button onclick="createSession()">
-        Create Session
-    </button>
+                        <!-- Tool Card 2: Database Engine -->
+                        <div class="tool-card active-card">
+                            <div class="card-content">
+                                <div class="tool-icon db-icon"><i class="fa-solid fa-database"></i></div>
+                                <h3>MySQL Workbench</h3>
+                                <p>Database Tool</p>
+                            </div>
+                            <button class="request-btn" onclick="createSession('Database Engine')">Request Session</button>
+                        </div>
 
-    <h3>Session Response:</h3>
+                        <!-- Tool Card 3: CAD Tool -->
+                        <div class="tool-card">
+                            <div class="card-content">
+                                <div class="tool-icon cad-icon"><i class="fa-solid fa-chevron-up"></i></div>
+                                <h3 style="margin-top: 15px;">ArchiCAD</h3>
+                                <p>CAD Tool</p>
+                            </div>
+                            <button class="request-btn" onclick="createSession('CAD Tool')">Request Session</button>
+                        </div>
+                    </div>
 
-    <pre id="response">No session created yet.</pre>
+                    <!-- Session Response Container -->
+                    <div class="response-section">
+                        <h3>Session Response:</h3>
+                        <pre id="response">No session created yet.</pre>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
 
     <script>
-        async function createSession() {
-            const response = await fetch(
-                'http://127.0.0.1:5000/sessions',
-                {
+        async function createSession(toolName) {
+            const responseElement = document.getElementById('response');
+            responseElement.textContent = `Connecting to ${toolName}...`;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/sessions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        tool: document.getElementById('tool').value
+                        tool: toolName
                     })
-                }
-            );
+                });
 
-            const data = await response.json();
-
-            document.getElementById('response').textContent =
-                JSON.stringify(data, null, 2);
+                const data = await response.json();
+                responseElement.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                responseElement.textContent = `Error connecting to backend: ${error.message}`;
+            }
         }
     </script>
-
 </body>
 </html>

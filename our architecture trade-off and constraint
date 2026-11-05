@@ -1,0 +1,5 @@
+Q3. 
+1. Trade-off
+ We chose microservices architecture because it supports independent scaling of services, but it increases system complexity.
+2. Constraint
+ Our main constraint was limited DevOps skills and project time, which influenced our choice of technologies such as Docker and GitHub Actions.

@@ -1,0 +1,8 @@
+Q2. How the five steps applied to our decision
+1. Understand Requirements and Goals: Our group identified that RP-Cloud Labs needs to support many users, secure login, different learning tools, multiple colleges, and AI-assisted assessments, so we needed an architecture that supports these requirements.
+2. Analyse the Domain: We analysed how the platform works and identified separate functions such as user management, authentication, tool sessions, database management, and assessment services.
+3. Evaluate Patterns: We compared Layered Architecture, Client-Server Architecture, and Microservices Architecture to identify which pattern could best support the platform.
+ We selected Microservices Architecture as the preferred approach because RP-Cloud Labs requires independent services that can be developed, deployed, maintained, and scaled separately.
+
+4. Weigh Trade-offs: We considered the advantages and disadvantages of each pattern and found that Microservices offers scalability and flexibility, although it requires more effort to manage and maintain.
+5. Prototype / Proof of Concept (PoC): We decided to test a small prototype using separate services for authentication and tool-session management to verify that they can communicate and work independently.

@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RP-Cloud Labs</title>
+</head>
+<body>
 
+    <h1>RP-Cloud Labs</h1>
+    <h2>Tool Session Management</h2>
+
+    <label>Select Learning Tool:</label>
+
+    <select id="tool">
+        <option>Python IDE</option>
+        <option>Database Engine</option>
+        <option>CAD Tool</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="createSession()">
+        Create Session
+    </button>
+
+    <h3>Session Response:</h3>
+
+    <pre id="response">No session created yet.</pre>
+
+    <script>
+        async function createSession() {
+            const response = await fetch(
+                'http://127.0.0.1:5000/sessions',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tool: document.getElementById('tool').value
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            document.getElementById('response').textContent =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+
+</body>
+</html>

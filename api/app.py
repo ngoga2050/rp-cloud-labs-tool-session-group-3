@@ -15,11 +15,20 @@ def home():
 @app.route("/api/health", methods=["GET"])
 def health():
     return jsonify({
-        "status": "healthy",
+        "status": "success",
         "service": "Tool-Session Service",
-        "message": "API is running successfully"
+        "message": "RP-Cloud Labs API is running"
     }), 200
-
+# Create session endpoint (placeholder)
+@app.route('/sessions', methods=['POST'])
+def create_session():
+    return jsonify({
+        "status": "success",
+        "message": "Session created successfully",
+        "session_id": "SESSION-001",
+        "tool": "Python IDE",
+        "session_status": "pending"
+    }), 201
 # Start the application
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

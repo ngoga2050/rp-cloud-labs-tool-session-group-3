@@ -1,0 +1,56 @@
+name: RP-Cloud Labs Docker CI
+
+on:
+  push:
+    branches:
+      - "**"
+
+  pull_request:
+    branches:
+      - "**"
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build-and-compose:
+    name: Build and Run Docker Services
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Build Docker Images
+        run: docker compose build
+
+      - name: Start Services
+        run: docker compose up --build -d
+
+      - name: Verify Services
+        run: |
+          docker compose ps
+          for service in $(docker compose config --services); do
+            if ! docker compose ps --status running --quiet "$service" | grep -q .; then
+              echo "ERROR: $service is not running"
+              docker compose logs "$service"
+              exit 1
+            fi
+            echo "SUCCESS: $service is running"
+          done
+
+      - name: Show Logs on Failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Clean Up
+        if: always()
+        run: docker compose down -v

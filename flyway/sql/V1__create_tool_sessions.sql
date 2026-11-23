@@ -1,3 +1,4 @@
+
 -- 1. Create colleges table
 CREATE TABLE colleges (
     college_id BIGSERIAL PRIMARY KEY,
@@ -18,4 +19,39 @@ CREATE TABLE students (
         FOREIGN KEY (college_id)
         REFERENCES colleges(college_id)
         ON DELETE RESTRICT
+);
+
+-- 3. Create tool_sessions table
+CREATE TABLE tool_sessions (
+    session_id BIGSERIAL PRIMARY KEY,
+    student_id BIGINT NOT NULL,
+    tool_name VARCHAR(100) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'REQUESTED',
+    started_at TIMESTAMPTZ,
+    ended_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_session_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(student_id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT chk_session_status
+        CHECK (
+            status IN (
+                'REQUESTED',
+                'ACTIVE',
+                'COMPLETED',
+                'CANCELLED'
+            )
+        ),
+
+    CONSTRAINT chk_session_dates
+        CHECK (
+            ended_at IS NULL
+            OR (
+                started_at IS NOT NULL
+                AND ended_at >= started_at
+            )
+        )
 );

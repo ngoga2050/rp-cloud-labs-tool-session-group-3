@@ -1,0 +1,65 @@
+name: Build and Run Docker Services
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build-and-compose:
+    name: Build, Migrate and Run Services
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download source code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Check Docker
+      - name: Check Docker
+        run: |
+          docker --version
+          docker compose version
+
+      # 3. Validate Compose configuration
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      # 4. Start PostgreSQL database
+      - name: Start PostgreSQL Database
+        run: docker compose up -d database
+
+      # 5. Execute Flyway migrations BEFORE BUILD
+      - name: Run Flyway Migrations
+        run: docker compose run --rm flyway
+
+      # 6. Build Docker images
+      - name: Build Docker Images
+        run: docker compose build
+
+      # 7. Start all application services
+      - name: Start Docker Services
+        run: docker compose up -d
+
+      # 8. Verify services
+      - name: Verify Running Services
+        run: |
+          docker compose ps
+          docker compose ps --all
+
+      # 9. Show logs if a step fails
+      - name: Show Logs on Failure
+        if: failure()
+        run: docker compose logs
+
+      # 10. Clean up
+      - name: Clean Up
+        if: always()
+        run: docker compose down -v

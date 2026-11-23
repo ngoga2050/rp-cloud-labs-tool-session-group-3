@@ -1,0 +1,15 @@
+flyway:
+    image: flyway/flyway:latest
+    container_name: rp-cloud-flyway
+    command:
+      - -url=jdbc:postgresql://database:5432/rpcloud
+      - -user=rpuser
+      - -password=rppassword
+      - -locations=filesystem:/flyway/sql
+      - -connectRetries=10
+      - migrate
+    volumes:
+      - ./flyway/sql:/flyway/sql:ro
+    depends_on:
+      database:
+        condition: service_healthy

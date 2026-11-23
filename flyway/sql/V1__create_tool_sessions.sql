@@ -55,3 +55,12 @@ CREATE TABLE tool_sessions (
             )
         )
 );
+-- 4. Create indexes for faster queries
+CREATE INDEX idx_students_college
+    ON students(college_id);
+
+CREATE INDEX idx_tool_sessions_student
+    ON tool_sessions(student_id);
+
+CREATE INDEX idx_tool_sessions_status
+    ON tool_sessions(status);

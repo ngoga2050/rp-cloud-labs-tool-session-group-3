@@ -1,3 +1,4 @@
+
 name: RP-Cloud Labs Docker CI
 
 on:
@@ -14,7 +15,7 @@ permissions:
 
 jobs:
   docker-build-and-compose:
-    name: Build and Run Docker Services
+    name: Build, Migrate and Run Docker Services
     runs-on: ubuntu-latest
 
     steps:
@@ -29,21 +30,29 @@ jobs:
       - name: Validate Docker Compose
         run: docker compose config
 
+      - name: Start PostgreSQL Database
+        run: docker compose up -d database
+
+      - name: Run Flyway Database Migrations
+        run: docker compose run --rm flyway
+
       - name: Build Docker Images
         run: docker compose build
 
-      - name: Start Services
-        run: docker compose up --build -d
+      - name: Start Application Services
+        run: docker compose up --build -d api redis kafka
 
-      - name: Verify Services
+      - name: Verify Running Services
         run: |
           docker compose ps
-          for service in $(docker compose config --services); do
+
+          for service in database api redis kafka; do
             if ! docker compose ps --status running --quiet "$service" | grep -q .; then
               echo "ERROR: $service is not running"
               docker compose logs "$service"
               exit 1
             fi
+
             echo "SUCCESS: $service is running"
           done
 
